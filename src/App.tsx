@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from "react";
+import { getWeather} from "./api/getWeather";
+import { CurrentWeatherResponse } from "./types/weather";
 import './App.css'
+import Weather from './components/Weather.tsx'
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [weatherData, setWeatherData] = useState<CurrentWeatherResponse | null>(null);
+    const [city, setCity] = useState("");
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    function addCity(formData: FormData) {
+        const city = formData.get("city") as string | null;
+        if (city) setCity(city);
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await getWeather(city);
+            if (data) setWeatherData(data);
+        };
+        
+        fetchData();
+    }, [city]);
+
+    return (
+        <>
+            <form className="type-city-form" action={addCity}>
+                <input
+                    type="text"
+                    aria-label="Type city"
+                    name="city"
+                />
+                <button>Type city</button>
+            </form>
+            <Weather
+                weather={weatherData}
+            />
+        </>
+    )
 }
 
 export default App
