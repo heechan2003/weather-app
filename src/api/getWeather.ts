@@ -19,12 +19,10 @@ export const getWeather = async (city: string): Promise<CurrentWeatherResponse |
     }
     try {
         const response = await axios.request(options);
-
         if (response.data.success === false) {
             console.error("API Error:", response.data.error.info);
             return null;
         }
-
         if (response.data) {
             return response.data as CurrentWeatherResponse;
         }

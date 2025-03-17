@@ -9,17 +9,17 @@ function App() {
     const [weatherData, setWeatherData] = useState<CurrentWeatherResponse | null>(null);
     const [input, setInput] = useState("")
     const [city, setCity] = useState("");
-    const [suggestions, setSuggestions] = useState<AutocompleteResponse[] | null>([]);
+    const [suggestions, setSuggestions] = useState<AutocompleteResponse | null>(null);
 
     function addCity(formData: FormData) {
         const city = formData.get("city") as string | null;
         if (city) setCity(city);
     }
 
-    const suggestionElements = suggestions?.map((suggestion, index) => (
+    const suggestionElements = suggestions?.results?.map((suggestion, index) => (
         <li key={index} onClick={() => {
             setCity(suggestion.city);
-            setSuggestions([]);
+            setSuggestions(null);
         }}>
             {suggestion.city}, {suggestion.country}
         </li>
@@ -28,12 +28,12 @@ function App() {
     // fetch autocomplete suggestions when input changes
     useEffect(() => {
         if (input.length < 2) {
-            setSuggestions([]);
+            setSuggestions(null);
             return;
         }
         const fetchSuggestions = async () => {
             const data = await autocomplete(input);
-            if (data?.results) setSuggestions(data.results);
+            if (data) setSuggestions(data);
         };
         fetchSuggestions();
     }, [input]);

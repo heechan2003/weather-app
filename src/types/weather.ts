@@ -45,8 +45,8 @@ export interface CurrentWeatherResponse {
     current: CurrentWeather;
 }
 
-// Autocomplete Response
-export interface AutocompleteResponse {
+// Address details
+export interface AutocompleteLocation {
     city: string;
     country: string;
     country_code: string;
@@ -82,4 +82,9 @@ export interface AutocompleteResponse {
         match_type: string;
     };
     result_type?: string;
+}
+
+// Autocomplete Response
+export interface AutocompleteResponse {
+    results: AutocompleteLocation[];
 }
