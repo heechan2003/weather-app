@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { getWeather} from "./api/getWeather";
 import { autocomplete } from "./api/autocomplete.ts"
 import { CurrentWeatherResponse, AutocompleteResponse } from "./types/weather";
-import './App.css'
 import Weather from './components/Weather.tsx'
 
 function App() {
@@ -49,7 +48,7 @@ function App() {
     }, [city]);
 
     return (
-        <>
+        <main>
             <form className="type-city-form" action={addCity}>
                 <input
                     type="text"
@@ -58,7 +57,7 @@ function App() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                 />
-                <button>Type city</button>
+                <button>Enter</button>
             </form>
             <ul>
                 {suggestionElements}
@@ -66,7 +65,7 @@ function App() {
             <Weather
                 weather={weatherData}
             />
-        </>
+        </main>
     )
 }
 

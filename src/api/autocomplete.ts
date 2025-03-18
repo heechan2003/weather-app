@@ -9,7 +9,6 @@ const BASE_URL = "https://api.geoapify.com/v1/geocode/autocomplete?";
  * @param query: string - The given input
  * @returns AutoCompleteResponse or null
  */
-
 export const autocomplete = async (query: string): Promise<AutocompleteResponse | null> => {
     const options = {
         method: 'GET',
