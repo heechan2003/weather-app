@@ -1,34 +1,24 @@
 import axios from "axios";
-import { CurrentWeatherResponse } from "../types/weather"
+import { WeatherResponse } from "../types/weather";
 
-const API_KEY = import.meta.env.VITE_WS_ACCESS_TOKEN;
-const BASE_URL = "http://api.weatherstack.com";
+const API_KEY = import.meta.env.VITE_OW_ACCESS_TOKEN;
 
 /**
- * Fetches current weather data for a given city
+ * Fetches current weather data for a given city using Axios.
  * @param city - The city name (e.g., "New York")
- * @returns WeatherData or an error message
+ * @returns WeatherResponse or null if the request fails
  */
-export const getWeather = async (city: string): Promise<CurrentWeatherResponse | null> => {
-    const options = {
-        method: 'GET',
-        url: `${BASE_URL}/current?access_key=${API_KEY}`,
-        params: {
-            query: city
-        }
-    }
+export async function getWeather(city: string): Promise<WeatherResponse | null> {
     try {
-        const response = await axios.request(options);
-        if (response.data.success === false) {
-            console.error("API Error:", response.data.error.info);
-            return null;
-        }
-        if (response.data) {
-            return response.data as CurrentWeatherResponse;
-        }
-    return null;
+        const response = await axios.get<WeatherResponse>(`https://api.openweathermap.org/data/2.5/weather`, {
+            params: {
+                q: city,
+                appid: API_KEY
+            }
+        });
+        return response.data;
     } catch (error) {
-        console.error("Error fetching weather:", error);
-        return null;
+        console.error("Error fetching weather data:", error)
+        return null
     }
-};
+}

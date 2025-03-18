@@ -1,48 +1,95 @@
-// Request info
-export interface WeatherRequest {
-    type: string;
-    query: string;
-    language: string;
-    unit: string;
-}
 
-// Location details
-export interface WeatherLocation {
-    name: string;
-    country: string;
-    region: string;
-    lat: string;
-    lon: string;
-    timezone_id: string;
-    localtime: string;
-    localtime_epoch: number;
-    utc_offset: string;
-}
-
-// Current weather conditions
-export interface CurrentWeather {
-    observation_time: string;
-    temperature: number;
-    weather_code: number;
-    weather_icons: string[];
-    weather_descriptions: string[];
-    wind_speed: number;
-    wind_degree: number;
-    wind_dir: string;
-    pressure: number;
-    precip: number;
-    humidity: number;
-    cloudcover: number;
-    feelslike: number;
-    uv_index: number;
+// complete interface for current weather call on openWeather API
+export interface WeatherResponse {
+    coord: Coordinates;
+    weather: Weather[];
+    base: string;
+    main: MainWeather;
     visibility: number;
+    wind: Wind;
+    rain?: Rain;
+    clouds: Clouds;
+    dt: number;
+    sys: Sys;
+    timezone: number;
+    id: number;
+    name: string;
+    cod: number;
 }
 
-// Complete current weather response
-export interface CurrentWeatherResponse {
-    request: WeatherRequest;
-    location: WeatherLocation;
-    current: CurrentWeather;
+// complete interface for forecast weather call on openWeather API
+export interface ForecastResponse {
+    cod: string;
+    message: number;
+    cnt: number;
+    list: ForecastItem[];
+    city: City;
+}
+
+interface ForecastItem {
+    dt: number;
+    main: MainWeather;
+    weather: Weather[];
+    clouds: Clouds;
+    wind: Wind;
+    visibility: number;
+    pop: number;
+    rain?: Rain;
+    sys: Sys;
+    dt_txt: string;
+}
+
+interface MainWeather {
+    temp: number;
+    feels_like: number;
+    temp_min: number;
+    temp_max: number;
+    pressure: number;
+    sea_level: number;
+    grnd_level: number;
+    humidity: number;
+    temp_kf: number;
+}
+
+interface Weather {
+    id: number;
+    main: string;
+    description: string;
+    icon: string;
+}
+
+interface Clouds {
+    all: number;
+}
+
+interface Wind {
+    speed: number;
+    deg: number;
+    gust: number;
+}
+
+interface Rain {
+    "3h": number;
+}
+
+interface Sys {
+    pod: string;
+}
+
+interface City {
+    id: number;
+    name: string;
+    coord: Coordinates;
+    country: string;
+    population: number;
+    timezone: number;
+    sunrise: number;
+    sunset: number;
+}
+
+interface Coordinates {
+    lat: number;
+    lon: number;
 }
 
 // Address details

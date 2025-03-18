@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
-import { getWeather} from "./api/getWeather";
+import { getWeather } from "./api/getWeather";
+import { getForecast } from "./api/getForecast.ts";
 import { autocomplete } from "./api/autocomplete.ts"
-import { CurrentWeatherResponse, AutocompleteResponse } from "./types/weather";
+import { WeatherResponse, AutocompleteResponse, ForecastResponse } from "./types/weather";
 import Weather from './components/Weather.tsx'
 
 function App() {
-    const [weatherData, setWeatherData] = useState<CurrentWeatherResponse | null>(null);
+    const [weatherData, setWeatherData] = useState<WeatherResponse | null>(null);
+    const [forecastData, setForecastData] = useState<ForecastResponse | null >(null);
+    const [suggestions, setSuggestions] = useState<AutocompleteResponse | null>(null);
     const [input, setInput] = useState("")
     const [city, setCity] = useState("");
-    const [suggestions, setSuggestions] = useState<AutocompleteResponse | null>(null);
 
     function addCity(formData: FormData) {
         const city = formData.get("city") as string | null;
@@ -42,29 +44,52 @@ function App() {
         if(!city) return;
         const fetchData = async () => {
             const data = await getWeather(city);
-            if (data) setWeatherData(data);
+            if (data) {
+                setWeatherData(data);
+            } else {
+                setWeatherData(null);
+            }
+        };
+        fetchData();
+    }, [city]);
+
+    // fetch forecast data when city is selected
+    useEffect(() => {
+        if(!city) return;
+        const fetchData = async () => {
+            const data = await getForecast(city);
+            if (data) {
+                setForecastData(data);
+            } else {
+                setForecastData(null);
+            }
         };
         fetchData();
     }, [city]);
 
     return (
         <main>
-            <form className="type-city-form" action={addCity}>
-                <input
-                    type="text"
-                    aria-label="Type city"
-                    name="city"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
+            <div className="search-wrap">
+                <form className="type-city-form" action={addCity}>
+                    <input
+                        type="text"
+                        aria-label="Type city"
+                        name="city"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                    />
+                    <button>Enter</button>
+                </form>
+                <ul>
+                    {suggestionElements}
+                </ul>
+            </div>
+            <div className="weather-container">
+                <Weather
+                    weatherResponse={weatherData}
+                    forecastResponse={forecastData}
                 />
-                <button>Enter</button>
-            </form>
-            <ul>
-                {suggestionElements}
-            </ul>
-            <Weather
-                weather={weatherData}
-            />
+            </div>
         </main>
     )
 }
