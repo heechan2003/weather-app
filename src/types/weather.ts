@@ -1,4 +1,3 @@
-
 // complete interface for current weather call on openWeather API
 export interface WeatherResponse {
     coord: Coordinates;
@@ -75,7 +74,6 @@ interface Rain {
 interface Sys {
     pod: string;
 }
-
 interface City {
     id: number;
     name: string;
