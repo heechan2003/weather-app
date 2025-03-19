@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getWeather } from "./api/getWeather";
 import { getForecast } from "./api/getForecast.ts";
 import { autocomplete } from "./api/autocomplete.ts"
@@ -11,6 +11,8 @@ function App() {
     const [suggestions, setSuggestions] = useState<AutocompleteResponse | null>(null);
     const [input, setInput] = useState("")
     const [city, setCity] = useState("");
+    const [isSuggestionsVisible, setIsSuggestionsVisible] = useState(false);
+    const inputRef =  useRef<HTMLDivElement | null>(null);
 
     function addCity(formData: FormData) {
         const city = formData.get("city") as string | null;
@@ -18,25 +20,42 @@ function App() {
     }
 
     const suggestionElements = suggestions?.results?.map((suggestion, index) => (
-        <li key={index} onClick={() => {
+        <li className="suggestion" key={index} onClick={() => {
             setCity(suggestion.city);
-            setSuggestions(null);
         }}>
-            {suggestion.city}, {suggestion.country}
+            {suggestion.city}, <span>{suggestion.country}</span>
         </li>
     )) || [];
 
+    // hides suggestions on clicking outside
+    useEffect(() => {
+        function handleClick(event: MouseEvent) {
+            if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+                setIsSuggestionsVisible(false);
+            } else if(suggestions && suggestions.results.length > 0) {
+                setIsSuggestionsVisible(true);
+            }
+        }
+        document.addEventListener("mousedown", handleClick);
+        return () => {
+            document.removeEventListener("mousedown", handleClick);
+        };
+    }, [suggestions]);
+
     // fetch autocomplete suggestions when input changes
     useEffect(() => {
-        if (input.length < 2) {
+        if (input.length < 3) {
+            setIsSuggestionsVisible(false);
             setSuggestions(null);
             return;
         }
+
         const fetchSuggestions = async () => {
             const data = await autocomplete(input);
             if (data) setSuggestions(data);
         };
         fetchSuggestions();
+        setIsSuggestionsVisible(true);
     }, [input]);
 
     // fetch weather data when city is selected
@@ -50,6 +69,8 @@ function App() {
                 setWeatherData(null);
             }
         };
+        setIsSuggestionsVisible(false);
+        setSuggestions(null); // set suggestion to null when city is found
         fetchData();
     }, [city]);
 
@@ -69,20 +90,25 @@ function App() {
 
     return (
         <main>
-            <div className="search-wrap">
-                <form className="type-city-form" action={addCity}>
-                    <input
-                        type="text"
-                        aria-label="Type city"
-                        name="city"
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                    />
+            <div className="autocomplete-container">
+                <form className="city-form" action={addCity}>
+                    <div className="input-wrap" ref={inputRef}>
+                        <input
+                            type="text"
+                            aria-label="Type city"
+                            name="city"
+                            value={input}
+                            placeholder="e.g. Seoul"
+                            onChange={(e) => setInput(e.target.value)}
+                        />
+                        {suggestions && isSuggestionsVisible && (
+                            <ul className="suggestions-list">
+                                {suggestionElements}
+                            </ul>
+                        )}
+                    </div>
                     <button>Enter</button>
                 </form>
-                <ul>
-                    {suggestionElements}
-                </ul>
             </div>
             <div className="weather-container">
                 <Weather

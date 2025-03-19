@@ -29,7 +29,7 @@ const Weather: React.FC<WeatherProps> = ({ weatherResponse, forecastResponse }) 
             )
 
             return (
-                <div className="card">
+                <div className="card" key={response.dt}>
                     <div className="forecast-icon-container">
                     <img src={iconUrl(response.weather[0].icon)} alt="Weather Icon" />
                     </div>

@@ -28,4 +28,4 @@ export const autocomplete = async (query: string): Promise<AutocompleteResponse 
         console.error("Error fetching weather:", error);
         return null;
     }
-};
+}
