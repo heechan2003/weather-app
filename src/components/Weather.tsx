@@ -10,6 +10,10 @@ const Weather: React.FC<WeatherProps> = ({ weatherResponse, forecastResponse }) 
         return <p>No weather data available.</p>
     }
 
+    function capitalize(str: string) {
+        return str.replace(/\b\w/g, char => char.toUpperCase());
+    }
+
     function toCelcius(kelvin: number) {
         return Math.round((kelvin - 273.15) * 10) / 10
     }
@@ -30,16 +34,16 @@ const Weather: React.FC<WeatherProps> = ({ weatherResponse, forecastResponse }) 
 
             return (
                 <div className="card" key={response.dt}>
-                    <div className="forecast-icon-container">
-                    <img src={iconUrl(response.weather[0].icon)} alt="Weather Icon" />
-                    </div>
-                    <div className="forecast-description-container">
-                        <p>{response.weather[0].description}</p>
-                        <p>{toCelcius(response.main.temp)} &deg;C</p>
-                    </div>
                     <div className="date-container">
                         <p>{day}</p>
                         <p>{date}</p>
+                    </div>
+                    <div className="forecast-icon-container">
+                        <img src={iconUrl(response.weather[0].icon)} alt="Weather Icon" />
+                    </div>
+                    <div className="forecast-description-container">
+                        <p>{capitalize(response.weather[0].description)}</p>
+                        <p>{toCelcius(response.main.temp)} &deg;C</p>
                     </div>
                 </div>
             )
@@ -54,7 +58,7 @@ const Weather: React.FC<WeatherProps> = ({ weatherResponse, forecastResponse }) 
                     <img src={iconUrl(weatherResponse.weather[0].icon)} alt="Weather Icon" />
                 </div>
                 <div className="current-description-container">
-                    <p>{weatherResponse.weather[0].description}</p>
+                    <p>{capitalize(weatherResponse.weather[0].description)}</p>
                     <p>{toCelcius(weatherResponse.main.temp)} &deg;C</p>
                 </div>
             </div>

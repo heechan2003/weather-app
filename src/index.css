@@ -1,12 +1,13 @@
+/* common */
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    margin: 0;
     padding: 60px;
     font-family: "Hanken Grotesk", Arial, sans-serif;
-    height: 100vh;
     display: flex;
     justify-content: center;
     background-color: #242a3c;
@@ -23,8 +24,9 @@ main {
     border-radius: 25px;
 }
 
-.autocomplete-container {
-    position: relative;
+/* search bar */
+.search-container {
+    margin-bottom: 40px;
     width: 100%;
 }
 
@@ -36,18 +38,20 @@ main {
 }
 
 .input-wrap {
+    display: flex;
     position: relative;
     flex: 1 0 150px;
 }
 
 .input-wrap input {
+    width: 100%;
     padding: 8px;
     border: 1px solid rgba(100, 90, 90, 0.537);
     border-radius: 5px;
 }
 
 .city-form > button {
-    padding: 7px 15px;
+    padding: 7px 25px;
     background-color: #242a3c;
     color: white;
     border-radius: 5px;
@@ -77,3 +81,74 @@ main {
 .suggestion > span {
     color: gray;
 }
+
+/* current weather */
+.current {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 40px;
+    padding: 10px;
+}
+
+.current > h2 {
+    font-size: 2.5rem;
+}
+
+.current-icon-container {
+    width: 80%;
+    height: auto;
+    max-width: 200px;
+}
+
+.current-icon-container > img {
+    width: 100%;
+    height: 100%;
+}
+
+.current-description-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* forecast weather */
+.forecast {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+}
+
+.card {
+    width: 17%;
+    max-width: 80px;
+    padding: 3px;
+    font-size: 0.6rem;
+}
+
+.date-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.forecast-icon-container {
+    width: 100%;
+    height: auto;
+}
+
+.forecast-icon-container > img {
+    width: 100%;
+    height: 100%;
+}
+
+.forecast-description-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+

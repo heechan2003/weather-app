@@ -9,16 +9,17 @@ function App() {
     const [weatherData, setWeatherData] = useState<WeatherResponse | null>(null);
     const [forecastData, setForecastData] = useState<ForecastResponse | null >(null);
     const [suggestions, setSuggestions] = useState<AutocompleteResponse | null>(null);
-    const [input, setInput] = useState("")
-    const [city, setCity] = useState("");
-    const [isSuggestionsVisible, setIsSuggestionsVisible] = useState(false);
+    const [input, setInput] = useState<string>("")
+    const [city, setCity] = useState<string>("");
     const inputRef =  useRef<HTMLDivElement | null>(null);
 
+    // city selected from form
     function addCity(formData: FormData) {
         const city = formData.get("city") as string | null;
         if (city) setCity(city);
     }
 
+    // autocomplete suggestions list returned from repsonse
     const suggestionElements = suggestions?.results?.map((suggestion, index) => (
         <li className="suggestion" key={index} onClick={() => {
             setCity(suggestion.city);
@@ -31,9 +32,7 @@ function App() {
     useEffect(() => {
         function handleClick(event: MouseEvent) {
             if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
-                setIsSuggestionsVisible(false);
-            } else if(suggestions && suggestions.results.length > 0) {
-                setIsSuggestionsVisible(true);
+                setSuggestions(null);
             }
         }
         document.addEventListener("mousedown", handleClick);
@@ -45,7 +44,6 @@ function App() {
     // fetch autocomplete suggestions when input changes
     useEffect(() => {
         if (input.length < 3) {
-            setIsSuggestionsVisible(false);
             setSuggestions(null);
             return;
         }
@@ -55,7 +53,6 @@ function App() {
             if (data) setSuggestions(data);
         };
         fetchSuggestions();
-        setIsSuggestionsVisible(true);
     }, [input]);
 
     // fetch weather data when city is selected
@@ -69,8 +66,7 @@ function App() {
                 setWeatherData(null);
             }
         };
-        setIsSuggestionsVisible(false);
-        setSuggestions(null); // set suggestion to null when city is found
+        setSuggestions(null);
         fetchData();
     }, [city]);
 
@@ -90,7 +86,8 @@ function App() {
 
     return (
         <main>
-            <div className="autocomplete-container">
+            
+            <div className="search-container">
                 <form className="city-form" action={addCity}>
                     <div className="input-wrap" ref={inputRef}>
                         <input
@@ -100,8 +97,14 @@ function App() {
                             value={input}
                             placeholder="e.g. Seoul"
                             onChange={(e) => setInput(e.target.value)}
+                            onFocus={async () => {
+                                if (input.length >= 3) {
+                                    const data = await autocomplete(input);
+                                    if (data) setSuggestions(data);
+                                }
+                            }}
                         />
-                        {suggestions && isSuggestionsVisible && (
+                        {suggestions && suggestions.results.length > 0 && (
                             <ul className="suggestions-list">
                                 {suggestionElements}
                             </ul>

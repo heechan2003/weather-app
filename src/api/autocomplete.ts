@@ -5,7 +5,7 @@ const API_KEY = import.meta.env.VITE_GA_ACCESS_TOKEN;
 const BASE_URL = "https://api.geoapify.com/v1/geocode/autocomplete?";
 
 /**
- * Fetches autocomplete locations from given input
+ * Fetches autocomplete locations from given input with Axios
  * @param query: string - The given input
  * @returns AutoCompleteResponse or null
  */
