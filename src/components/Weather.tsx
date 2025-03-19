@@ -1,12 +1,13 @@
-import { WeatherResponse, ForecastResponse } from "../types/weather";
+import { WeatherResponse, ForecastResponse, AutocompleteLocation } from "../types/weather";
 
 interface WeatherProps {
     weatherResponse: WeatherResponse | null;
     forecastResponse: ForecastResponse | null;
+    location: AutocompleteLocation | null;
 }
 
-const Weather: React.FC<WeatherProps> = ({ weatherResponse, forecastResponse }) => {
-    if (!weatherResponse || !forecastResponse) {
+const Weather: React.FC<WeatherProps> = ({ weatherResponse, forecastResponse, location }) => {
+    if (!weatherResponse || !forecastResponse || !location) {
         return <p>No weather data available.</p>
     }
 
@@ -53,7 +54,7 @@ const Weather: React.FC<WeatherProps> = ({ weatherResponse, forecastResponse }) 
     return (
         <>
             <div className="current">
-                <h2>{weatherResponse.name}</h2>
+                <h2>{location.city}</h2>
                 <div className="current-icon-container">
                     <img src={iconUrl(weatherResponse.weather[0].icon)} alt="Weather Icon" />
                 </div>
