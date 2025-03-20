@@ -1,9 +1,9 @@
-import { WeatherResponse, ForecastResponse, AutocompleteLocation } from "../types/weather";
+import { WeatherResponse, ForecastResponse, CityLocation } from "../types/weather";
 
 interface WeatherProps {
     weatherResponse: WeatherResponse | null;
     forecastResponse: ForecastResponse | null;
-    location: AutocompleteLocation | null;
+    location: CityLocation | null;
 }
 
 const Weather: React.FC<WeatherProps> = ({ weatherResponse, forecastResponse, location }) => {
@@ -54,7 +54,7 @@ const Weather: React.FC<WeatherProps> = ({ weatherResponse, forecastResponse, lo
     return (
         <>
             <div className="current">
-                <h2>{location.city}</h2>
+                <h2>{location.name}</h2>
                 <div className="current-icon-container">
                     <img src={iconUrl(weatherResponse.weather[0].icon)} alt="Weather Icon" />
                 </div>

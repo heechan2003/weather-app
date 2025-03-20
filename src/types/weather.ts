@@ -90,6 +90,18 @@ interface Coordinates {
     lon: number;
 }
 
+// Location interface for city state
+export interface CityLocation {
+    name: string;
+    lat: number;
+    lon: number;
+}
+
+export interface Search {
+    value: string;
+    label: string;
+}
+
 // Address details
 export interface AutocompleteLocation {
     city: string;
@@ -127,9 +139,4 @@ export interface AutocompleteLocation {
         match_type: string;
     };
     result_type?: string;
-}
-
-// Autocomplete Response
-export interface AutocompleteResponse {
-    results: AutocompleteLocation[];
 }

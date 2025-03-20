@@ -1,36 +1,15 @@
-import Select from "react-select";
+import AsyncSelect from "react-select/async";
 import { useEffect, useState } from "react";
+import { fetchCities } from "./api/fetchCities.ts";
 import { getWeather } from "./api/getWeather";
 import { getForecast } from "./api/getForecast.ts";
-import { autocomplete } from "./api/autocomplete.ts"
-import { WeatherResponse, AutocompleteResponse, ForecastResponse, AutocompleteLocation } from "./types/weather";
+import { WeatherResponse, ForecastResponse, CityLocation, Search } from "./types/weather";
 import Weather from './components/Weather.tsx'
 
 function App() {
     const [weatherData, setWeatherData] = useState<WeatherResponse | null>(null);
     const [forecastData, setForecastData] = useState<ForecastResponse | null >(null);
-    const [suggestions, setSuggestions] = useState<AutocompleteResponse | null>(null);
-    const [input, setInput] = useState("")
-    const [city, setCity] = useState<AutocompleteLocation| null>(null);
-
-    const suggestionOptions = suggestions?.results?.map((s) => ({
-        ...s,
-        label: `${s.city}, ${s.country}`,
-    })) || [];
-
-    // fetch autocomplete suggestions when input changes
-    useEffect(() => {
-        if (input.length < 3) {
-            setSuggestions(null);
-            return;
-        }
-
-        const fetchSuggestions = async () => {
-            const data = await autocomplete(input);
-            if (data) setSuggestions(data);
-        };
-        fetchSuggestions();
-    }, [input]);
+    const [city, setCity] = useState<CityLocation | null>(null);
 
     // fetch weather data when city is selected
     useEffect(() => {
@@ -42,8 +21,7 @@ function App() {
             } else {
                 setWeatherData(null);
             }
-        };
-        setSuggestions(null);
+        }
         fetchData();
     }, [city]);
 
@@ -57,24 +35,30 @@ function App() {
             } else {
                 setForecastData(null);
             }
-        };
+        }
         fetchData();
     }, [city]);
 
     return (
         <main>
             <div className="search-wrap">
-                <Select
-                    options={suggestionOptions}
-                    onChange={(selectedOption) => {
+                <AsyncSelect
+                    loadOptions={fetchCities}
+                    onChange={(selectedOption: Search | null) => {
                         if (selectedOption) {
-                            setCity(selectedOption);
+                            const [city, lat, lon] = selectedOption.value.split(',');
+                            setCity({ name: city, lat: parseFloat(lat), lon: parseFloat(lon) })
                         }
                     }}
-                    onInputChange={(newInputValue) => {
-                        setInput(newInputValue);
-                    }}
                     placeholder="Select a city"
+                    styles={{
+                        control: (base) => ({ ...base, backgroundColor: "white" }),
+                        option: (base, { isFocused }) => ({
+                            ...base,
+                            backgroundColor: isFocused ? "gray" : "white",
+                            color: "black",
+                        }),
+                    }}
                 />
             </div>
             <div className="weather-container">

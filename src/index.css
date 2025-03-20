@@ -25,61 +25,8 @@ main {
 }
 
 /* search bar */
-.search-container {
+.search-wrap {
     margin-bottom: 40px;
-    width: 100%;
-}
-
-.city-form {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    width: 100%;
-}
-
-.input-wrap {
-    display: flex;
-    position: relative;
-    flex: 1 0 150px;
-}
-
-.input-wrap input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid rgba(100, 90, 90, 0.537);
-    border-radius: 5px;
-}
-
-.city-form > button {
-    padding: 7px 25px;
-    background-color: #242a3c;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.suggestions-list {
-    position: absolute;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border: 0.8px solid rgba(100, 90, 90, 0.537);
-    border-radius: 0 0 5px 5px;
-    width: 100%;
-    top: 87%;
-    left: 0;
-    background-color: white;
-}
-
-.suggestion {
-    padding: 5px;
-    color: black;
-    border-top: 0.8px solid rgba(100, 90, 90, 0.537);
-    font-size: 0.8rem;
-}
-
-.suggestion > span {
-    color: gray;
 }
 
 /* current weather */
