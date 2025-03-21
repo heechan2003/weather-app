@@ -20,8 +20,13 @@ function toDay(date: string) {
 // change given dt-txt to month and day
 function toDate(date: string) {
     return new Date(date).toLocaleDateString(
-        undefined,{month: "short", day: "numeric"}
+        undefined,{month: "numeric", day: "numeric"}
     );
 }
 
-export { toCelcius, isDay, toDay, toDate }
+// capitalize every first alphabet of each word
+function capitalize(str: string): string {
+    return str.replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+export { toCelcius, isDay, toDay, toDate, capitalize }

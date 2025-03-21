@@ -82,7 +82,11 @@ const Icon: React.FC<IconProps> = ({ dt, timezone, weather }) => {
     }
 
     return (
-        <img src={iconSrc || ""} alt={weather} />
+        <img
+            className="icon"
+            src={iconSrc || ""} 
+            alt={weather} 
+        />
     );
 };
 

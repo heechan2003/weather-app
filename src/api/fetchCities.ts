@@ -21,8 +21,8 @@ export const fetchCities = async (query: string) => {
         });
         if (response.data) {
             return response.data.results.map((s: AutocompleteLocation) => ({
-                value: `${s.city}, ${s.country}, ${s.lat}, ${s.lon}`,
-                label: `${s.city}, ${s.country}`
+                value: `${s.city || s.address_line1}, ${s.country}, ${s.lat}, ${s.lon}`,
+                label: `${s.city || s.address_line1}, ${s.country}`
             }))
         }
     return null;

@@ -52,12 +52,42 @@ function App() {
                     }}
                     placeholder="Select a city"
                     styles={{
-                        control: (base) => ({ ...base, backgroundColor: "white" }),
+                        control: (base) => ({ 
+                            ...base,
+                            padding: '5px',
+                            backgroundColor: '#202B3B',
+                            border: 0,
+                            boxShadow: 'none',
+                            '&:hover': {
+                                border: '1px solid #807F7F'
+                            }
+                        }),
+                        input: (base) => ({
+                            ...base,
+                            color: '#807F7F',
+                        }),
+                        singleValue: (base) => ({
+                            ...base,
+                            color: '#807F7F',
+                        }),
                         option: (base, { isFocused }) => ({
                             ...base,
-                            backgroundColor: isFocused ? "gray" : "white",
-                            color: "black",
+                            backgroundColor: isFocused ? '#807F7F' : '#202B3B',
+                            color: isFocused ? '#FFF' : '#807F7F',
                         }),
+                        menu: (base) => ({
+                            ...base,
+                            backgroundColor: '#202B3B'
+                        }),
+                        indicatorSeparator: (base) => ({
+                            ...base,
+                            backgroundColor: '#807F7F'
+                        }),
+                        dropdownIndicator: (base) => ({
+                            ...base,
+                            color: '#807F7F',
+                            backgroundColor: "#202B3B",
+                        })
                     }}
                 />
             </div>
