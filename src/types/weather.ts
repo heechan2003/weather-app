@@ -92,11 +92,13 @@ interface Coordinates {
 
 // Location interface for city state
 export interface CityLocation {
-    name: string;
+    city: string;
+    country: string;
     lat: number;
     lon: number;
 }
 
+// interface from  AutocompleteLocation for AsyncSelect, value containing, CityLocation details
 export interface Search {
     value: string;
     label: string;

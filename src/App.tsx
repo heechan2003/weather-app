@@ -46,8 +46,8 @@ function App() {
                     loadOptions={fetchCities}
                     onChange={(selectedOption: Search | null) => {
                         if (selectedOption) {
-                            const [city, lat, lon] = selectedOption.value.split(',');
-                            setCity({ name: city, lat: parseFloat(lat), lon: parseFloat(lon) })
+                            const [city, country, lat, lon] = selectedOption.value.split(',');
+                            setCity({ city: city, country: country, lat: parseFloat(lat), lon: parseFloat(lon) });
                         }
                     }}
                     placeholder="Select a city"
