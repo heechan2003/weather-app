@@ -112,10 +112,6 @@ main {
     object-fit: cover;
 }
 
-.date-wrap {
-    text-align: center;
-}
-
 .date-wrap > p:nth-child(1) {
     font-size: 1.5rem;
     font-weight: bold;
